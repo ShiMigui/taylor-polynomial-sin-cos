@@ -60,20 +60,22 @@ shift = 1 if fn == '1' else 0
 
 # Cálculo do polinômio de Taylor
 res = 0.0
+sinal = 1
+fatorial = 1
+x2 = x * x
+potencia = x if shift == 1 else 1
+
 for i in range(n):
     exp = 2 * i + shift
-    termo = ((-1)**i) * (x**exp) / math.factorial(exp)
-    res += termo
+    if i > 0:
+        potencia *= x2
+        fatorial *= (exp - 1) * exp
+    res += sinal * potencia / fatorial
+    sinal *= -1
 
 # Valor real usando math
 real = math.sin(x) if fn == '1' else math.cos(x)
 
-# Cálculo do erro
-erro_abs = abs(real - res)
-erro_rel = erro_abs / abs(real) if real != 0 else 0
-
 # Resultados
 print(f"\nResultado pelo polinômio de Taylor: {res}")
 print(f"Resultado real com math: {real}")
-print(f"Erro absoluto: {erro_abs}")
-print(f"Erro relativo: {erro_rel * 100:.6f}%")
